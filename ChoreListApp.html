@@ -69,6 +69,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: block;
+            margin: 0 auto;
         }
 
         .start-button:hover {
@@ -81,6 +83,13 @@
             font-weight: bold;
             margin: 20px 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        .timer-controls {
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.7);
         }
 
         .timer-bonus {
@@ -124,10 +133,6 @@
             background: linear-gradient(45deg, #4CAF50, #45a049);
         }
 
-        .locked {
-            background: linear-gradient(45deg, #95a5a6, #7f8c8d) !important;
-        }
-
         .chore-item {
             display: flex;
             align-items: center;
@@ -145,48 +150,32 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .chore-item.needs-parent-check {
-            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-            border-color: #6c5ce7;
-            animation: pulse 2s infinite;
-        }
-
-        .chore-item.parent-approved {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
+        .chore-item.completed {
+            background: linear-gradient(45deg, #d4edda, #c3e6cb);
             border-color: #4CAF50;
         }
 
-        .chore-emoji {
-            font-size: 1.5em;
-            margin-right: 15px;
-            min-width: 40px;
-            text-align: center;
+        .chore-item.fully-locked {
+            background: #e9ecef !important;
+            border-color: #adb5bd !important;
+            cursor: not-allowed !important;
+            opacity: 0.5 !important;
         }
 
-        .triple-click-warning {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(231, 76, 60, 0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.2em;
-            z-index: 1500;
-            animation: fade-in-out 2s ease;
+        .chore-item.fully-locked:hover {
+            transform: none !important;
+            box-shadow: none !important;
         }
 
-        @keyframes fade-in-out {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        .chore-item.fully-locked .checkbox {
+            background: #6c757d !important;
+            border-color: #6c757d !important;
+            color: white !important;
         }
 
-        .timer-controls {
-            margin-top: 10px;
-            font-size: 0.8em;
-            color: rgba(255,255,255,0.7);
+        .chore-item.fully-locked .chore-text {
+            color: #6c757d !important;
+            text-decoration: line-through;
         }
 
         .chore-item.locked {
@@ -200,9 +189,58 @@
             transform: none;
         }
 
-        .chore-item:not(.completed):not(.locked) {
+        .chore-item:not(.completed):not(.fully-locked):not(.locked) {
             background: linear-gradient(45deg, #fff3cd, #ffeaa7);
             border-color: #ffc107;
+        }
+
+        .parent-mode {
+            background: rgba(108, 92, 231, 0.1);
+            border: 2px dashed #6c5ce7;
+        }
+
+        .parent-check-section {
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(108, 92, 231, 0.1);
+            border: 2px dashed #6c5ce7;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .parent-ready-message {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .parent-button {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .parent-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .chore-emoji {
+            font-size: 1.5em;
+            margin-right: 15px;
+            min-width: 40px;
+            text-align: center;
         }
 
         .checkbox {
@@ -233,125 +271,6 @@
             flex: 1;
             font-size: 1.3em;
             font-weight: bold;
-        }
-
-        .parent-check-section {
-            margin-top: 20px;
-            text-align: center;
-            background: rgba(108, 92, 231, 0.1);
-            border: 2px dashed #6c5ce7;
-            border-radius: 15px;
-            padding: 20px;
-        }
-
-        .parent-ready-message {
-            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-
-        .parent-button-inline {
-            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .parent-button-inline:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        /* Landscape/Horizontal Tablet Optimizations */
-        @media screen and (orientation: landscape) and (max-height: 600px) {
-            .container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                max-width: 1200px;
-            }
-            
-            .timer-section {
-                grid-column: 1 / -1;
-                margin-bottom: 15px;
-            }
-            
-            .progress-bar {
-                grid-column: 1 / -1;
-                margin-bottom: 15px;
-            }
-            
-            .section {
-                margin-bottom: 15px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-                margin-bottom: 5px;
-            }
-            
-            .timer-display {
-                font-size: 2em;
-            }
-            
-            .chore-item {
-                padding: 15px;
-                margin-bottom: 10px;
-            }
-            
-            .section-title {
-                font-size: 1.5em;
-                padding: 10px;
-            }
-        }
-
-        /* Better mobile/tablet touch targets */
-        @media screen and (max-width: 768px) {
-            .chore-item {
-                min-height: 60px;
-            }
-            
-            .checkbox {
-                min-width: 50px;
-                min-height: 50px;
-            }
-            
-            .start-button {
-                padding: 25px 50px;
-                font-size: 1.8em;
-            }
-        }
-
-        .parent-button {
-            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .parent-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .parent-mode {
-            background: rgba(108, 92, 231, 0.1);
-            border: 2px dashed #6c5ce7;
         }
 
         .parent-checkbox {
@@ -413,6 +332,26 @@
             animation: pulse 2s infinite;
         }
 
+        .triple-click-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            z-index: 1500;
+            animation: fade-in-out 2s ease;
+        }
+
+        @keyframes fade-in-out {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.02); }
@@ -452,6 +391,153 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
+
+        .reset-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+        }
+
+        .reset-button {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .reset-button:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .reset-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .reset-dialog {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+        }
+
+        .reset-dialog h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .reset-dialog p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .reset-dialog-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-reset {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cancel-reset {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Landscape/Horizontal Tablet Optimizations */
+        @media screen and (orientation: landscape) and (max-height: 600px) {
+            .container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                max-width: 1200px;
+            }
+            
+            .timer-section {
+                grid-column: 1 / -1;
+                margin-bottom: 15px;
+            }
+            
+            .progress-bar {
+                grid-column: 1 / -1;
+                margin-bottom: 15px;
+            }
+            
+            .section {
+                margin-bottom: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+                margin-bottom: 5px;
+            }
+            
+            .timer-display {
+                font-size: 2em;
+            }
+            
+            .chore-item {
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .section-title {
+                font-size: 1.5em;
+                padding: 10px;
+            }
+        }
+
+        /* Better mobile/tablet touch targets */
+        @media screen and (max-width: 768px) {
+            .chore-item {
+                min-height: 60px;
+            }
+            
+            .checkbox {
+                min-width: 50px;
+                min-height: 50px;
+            }
+            
+            .start-button {
+                padding: 25px 50px;
+                font-size: 1.8em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -485,6 +571,16 @@
                 ⭐ Core Chores (Must Do First!) ⭐
             </div>
             <div id="coreChores"></div>
+            
+            <!-- Parent Check Section for Core Chores -->
+            <div id="coreParentSection" class="parent-check-section" style="display: none;">
+                <div class="parent-ready-message">
+                    🎉 All core chores completed! Ready for parent check! 🎉
+                </div>
+                <button class="parent-button" onclick="toggleParentMode()">
+                    👨‍👩‍👧‍👦 Parent Check Mode
+                </button>
+            </div>
         </div>
 
         <!-- Allowance Chores Section -->
@@ -496,18 +592,36 @@
                 🎉 Great job! Allowance chores are now unlocked! 🎉
             </div>
             <div id="allowanceChores"></div>
+            
+            <!-- Parent Check Section for Allowance Chores -->
+            <div id="allowanceParentSection" class="parent-check-section" style="display: none;">
+                <div class="parent-ready-message">
+                    💰 Allowance chores completed! Ready for parent check! 💰
+                </div>
+                <button class="parent-button" onclick="toggleAllowanceParentMode()">
+                    👨‍👩‍👧‍👦 Parent Check Allowance
+                </button>
+            </div>
+        </div>
+
+        <!-- Reset Section -->
+        <div class="reset-section">
+            <button class="reset-button" onclick="showResetDialog()">
+                🔄 Reset Everything
+            </button>
         </div>
     </div>
 
     <script>
-        // Sample chore data with emojis
+        // Chore data with emojis
         const choreData = {
             core: [
-                { text: "Make my bed", emoji: "🛏️" },
+                { text: "Get dressed", emoji: "👕" },
                 { text: "Brush my teeth", emoji: "🦷" },
-                { text: "Put dirty clothes in hamper", emoji: "👕" },
-                { text: "Clear my dishes from table", emoji: "🍽️" },
-                { text: "Put toys away in bedroom", emoji: "🧸" }
+                { text: "Brush my hair", emoji: "🪮" },
+                { text: "Make my bed", emoji: "🛏️" },
+                { text: "Clean up bedroom toys", emoji: "🧸" },
+                { text: "Clean up living room toys", emoji: "🎮" }
             ],
             allowance: [
                 { text: "Vacuum living room ($2)", emoji: "🧹" },
@@ -518,12 +632,11 @@
             ]
         };
 
-        let parentMode = false;
         let choreStatus = JSON.parse(localStorage.getItem('choreStatus')) || {
             core: {},
             allowance: {},
             parentApproval: { core: {}, allowance: {} },
-            bonusTimeGiven: { core: {}, allowance: {} } // Track which tasks already gave bonus time
+            bonusTimeGiven: { core: {}, allowance: {} }
         };
 
         // Timer variables
@@ -531,6 +644,19 @@
         let timeRemaining = 0;
         let timerInterval = null;
         let timerClickCount = 0;
+        let parentMode = false;
+        let allowanceParentMode = false;
+
+        function startTimer() {
+            timerActive = true;
+            timeRemaining = 10 * 60;
+            
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('timerDisplay').style.display = 'block';
+            
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimerDisplay();
+        }
 
         function handleTimerClick() {
             timerClickCount++;
@@ -542,7 +668,7 @@
                     resetTimer();
                 }
                 timerClickCount = 0;
-            }, 1000); // Reset click count after 1 second
+            }, 1000);
         }
 
         function pauseTimer() {
@@ -551,7 +677,6 @@
                 timerInterval = null;
                 showTimerMessage("⏸️ Timer Paused! Tap 5x to reset ⏸️");
             } else if (timerActive && !timerInterval) {
-                // Resume timer
                 timerInterval = setInterval(updateTimer, 1000);
                 showTimerMessage("▶️ Timer Resumed! ▶️");
             }
@@ -568,15 +693,6 @@
                 
                 showTimerMessage("🔄 Timer Reset! Ready to start over 🔄");
             }
-        }
-            timerActive = true;
-            timeRemaining = 10 * 60; // 10 minutes in seconds
-            
-            document.getElementById('startButton').style.display = 'none';
-            document.getElementById('timerDisplay').style.display = 'block';
-            
-            timerInterval = setInterval(updateTimer, 1000);
-            updateTimerDisplay();
         }
 
         function updateTimer() {
@@ -605,8 +721,8 @@
 
         function addBonusTime(type, index) {
             if (timerActive && !choreStatus.bonusTimeGiven[type][index]) {
-                timeRemaining += 5 * 60; // Add 5 minutes
-                choreStatus.bonusTimeGiven[type][index] = true; // Mark as bonus given
+                timeRemaining += 5 * 60;
+                choreStatus.bonusTimeGiven[type][index] = true;
                 showTimerMessage("🎉 +5 minutes! Great job! 🎉");
                 updateTimerDisplay();
                 saveData();
@@ -630,6 +746,8 @@
             
             if (completedCount === choreData.core.length && timerActive) {
                 clearInterval(timerInterval);
+                // Return to kid mode when core chores are fully complete
+                returnToKidMode();
                 showCompletionCelebration();
             }
         }
@@ -660,6 +778,102 @@
             if (celebration) {
                 document.body.removeChild(celebration);
             }
+            // Ensure we're in kid mode after closing celebration
+            returnToKidMode();
+        }
+
+        function showResetDialog() {
+            const dialog = document.createElement('div');
+            dialog.className = 'reset-warning';
+            dialog.id = 'resetDialog';
+            
+            const dialogContent = document.createElement('div');
+            dialogContent.className = 'reset-dialog';
+            
+            const title = document.createElement('h3');
+            title.textContent = '⚠️ Reset Everything?';
+            
+            const message = document.createElement('p');
+            message.textContent = 'This will clear all completed chores, parent approvals, and reset the timer. Are you sure you want to start completely over?';
+            
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'reset-dialog-buttons';
+            
+            const cancelButton = document.createElement('button');
+            cancelButton.className = 'cancel-reset';
+            cancelButton.textContent = 'Cancel';
+            cancelButton.onclick = function() {
+                closeResetDialog();
+            };
+            
+            const confirmButton = document.createElement('button');
+            confirmButton.className = 'confirm-reset';
+            confirmButton.textContent = 'Yes, Reset All';
+            confirmButton.onclick = function() {
+                confirmReset();
+            };
+            
+            buttonContainer.appendChild(cancelButton);
+            buttonContainer.appendChild(confirmButton);
+            
+            dialogContent.appendChild(title);
+            dialogContent.appendChild(message);
+            dialogContent.appendChild(buttonContainer);
+            
+            dialog.appendChild(dialogContent);
+            document.body.appendChild(dialog);
+        }
+
+        function closeResetDialog() {
+            const dialog = document.getElementById('resetDialog');
+            if (dialog && document.body.contains(dialog)) {
+                document.body.removeChild(dialog);
+            }
+        }
+
+        function confirmReset() {
+            // Clear all data
+            choreStatus = {
+                core: {},
+                allowance: {},
+                parentApproval: { core: {}, allowance: {} },
+                bonusTimeGiven: { core: {}, allowance: {} }
+            };
+            
+            // Reset timer
+            timerActive = false;
+            timeRemaining = 0;
+            parentMode = false;
+            allowanceParentMode = false;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            // Reset UI
+            document.getElementById('startButton').style.display = 'block';
+            document.getElementById('timerDisplay').style.display = 'none';
+            
+            // Save and refresh display
+            saveData();
+            closeResetDialog();
+            renderChores();
+            updateProgress();
+            
+            // Show confirmation
+            showTimerMessage("🔄 Everything reset! Ready to start fresh! 🔄");
+        }
+
+        function showTripleClickWarning() {
+            const warning = document.createElement('div');
+            warning.className = 'triple-click-warning';
+            warning.textContent = '⚠️ Task unlocked for re-checking ⚠️';
+            document.body.appendChild(warning);
+            
+            setTimeout(function() {
+                if (document.body.contains(warning)) {
+                    document.body.removeChild(warning);
+                }
+            }, 2000);
         }
 
         function initApp() {
@@ -682,6 +896,29 @@
         function renderChores() {
             renderCoreChores();
             renderAllowanceChores();
+            updateModeIndicator();
+        }
+
+        function updateModeIndicator() {
+            const indicator = document.getElementById('modeIndicator');
+            if (!indicator) return; // Safety check - exit if element doesn't exist
+            
+            if (parentMode) {
+                indicator.textContent = '👨‍👩‍👧‍👦 Parent Check Mode: Core Chores';
+                indicator.style.background = 'rgba(108, 92, 231, 0.8)';
+                indicator.style.padding = '8px 15px';
+                indicator.style.borderRadius = '15px';
+            } else if (allowanceParentMode) {
+                indicator.textContent = '👨‍👩‍👧‍👦 Parent Check Mode: Allowance Chores';
+                indicator.style.background = 'rgba(76, 175, 80, 0.8)';
+                indicator.style.padding = '8px 15px';
+                indicator.style.borderRadius = '15px';
+            } else {
+                indicator.textContent = '🧒 Kid Mode: Check off your chores!';
+                indicator.style.background = 'rgba(255, 193, 7, 0.8)';
+                indicator.style.padding = '8px 15px';
+                indicator.style.borderRadius = '15px';
+            }
         }
 
         function renderCoreChores() {
@@ -692,12 +929,30 @@
                 const choreItem = createChoreElement(choreData.core[i], i, 'core');
                 container.appendChild(choreItem);
             }
+            
+            // Check if all core chores are completed by kids (not necessarily parent-approved yet)
+            const allCoreCompleted = choreData.core.every(function(_, index) {
+                return choreStatus.core[index];
+            });
+            
+            // Check if all core chores are fully approved and locked
+            const allCoreApproved = choreData.core.every(function(_, index) {
+                return choreStatus.core[index] && choreStatus.parentApproval.core[index];
+            });
+            
+            const parentSection = document.getElementById('coreParentSection');
+            if (allCoreCompleted && !allCoreApproved && !parentMode) {
+                parentSection.style.display = 'block';
+            } else {
+                parentSection.style.display = 'none';
+            }
         }
 
         function renderAllowanceChores() {
             const container = document.getElementById('allowanceChores');
             container.innerHTML = '';
             
+            // Only unlock allowance chores if ALL core chores are fully completed and approved
             const coreComplete = areCoreChoresComplete();
             
             if (coreComplete) {
@@ -710,60 +965,61 @@
                 const choreItem = createChoreElement(choreData.allowance[i], i, 'allowance', !coreComplete);
                 container.appendChild(choreItem);
             }
+
+            // Check if all allowance chores are completed by kids (not necessarily parent-approved yet)
+            const allAllowanceCompleted = choreData.allowance.every(function(_, index) {
+                return choreStatus.allowance[index];
+            });
+            
+            // Check if all allowance chores are fully approved and locked
+            const allAllowanceApproved = choreData.allowance.every(function(_, index) {
+                return choreStatus.allowance[index] && choreStatus.parentApproval.allowance[index];
+            });
+            
+            const allowanceParentSection = document.getElementById('allowanceParentSection');
+            if (coreComplete && allAllowanceCompleted && !allAllowanceApproved && !allowanceParentMode) {
+                // Show button when all allowance chores are kid-completed but not parent-approved
+                allowanceParentSection.style.display = 'block';
+            } else {
+                allowanceParentSection.style.display = 'none';
+            }
         }
 
         function createChoreElement(chore, index, type, locked) {
             locked = locked || false;
             const choreItem = document.createElement('div');
-            choreItem.className = 'chore-item' + (locked ? ' locked' : '');
+            choreItem.className = 'chore-item';
             
             const isCompleted = choreStatus[type][index];
             const hasParentApproval = choreStatus.parentApproval[type][index];
+            const isFullyLocked = isCompleted && hasParentApproval;
             
-            // Set visual state based on completion and approval
+            // Set visual state
             if (locked) {
-                // Task is locked (allowance tasks before core completion)
-            } else if (hasParentApproval) {
-                choreItem.classList.add('parent-approved');
+                choreItem.classList.add('locked');
+            } else if (isFullyLocked) {
+                choreItem.classList.add('fully-locked');
             } else if (isCompleted) {
-                choreItem.classList.add('needs-parent-check');
+                choreItem.classList.add('completed');
             }
 
-            // Emoji icon
+            if ((parentMode && type === 'core') || (allowanceParentMode && type === 'allowance')) {
+                choreItem.classList.add('parent-mode');
+            }
+
             const emojiDiv = document.createElement('div');
             emojiDiv.className = 'chore-emoji';
             emojiDiv.textContent = chore.emoji;
 
-            // Kid checkbox
             const checkbox = document.createElement('div');
-            checkbox.className = 'checkbox' + (isCompleted ? ' checked' : '') + (locked ? ' locked' : '');
+            checkbox.className = 'checkbox';
+            if (isCompleted) {
+                checkbox.classList.add('checked');
+            }
+            if (locked) {
+                checkbox.classList.add('locked');
+            }
             checkbox.innerHTML = isCompleted ? '✓' : '';
-
-            // Parent checkbox (always visible now)
-            const parentCheckbox = document.createElement('div');
-            parentCheckbox.className = 'checkbox parent-checkbox' + (hasParentApproval ? ' checked' : '');
-            parentCheckbox.innerHTML = hasParentApproval ? '✓' : '👨‍👩‍👧‍👦';
-            
-            // Parent checkbox click with triple-click protection
-            let parentClickCount = 0;
-            parentCheckbox.onclick = function(e) {
-                e.stopPropagation();
-                
-                if (hasParentApproval) {
-                    // Triple click to unlock
-                    parentClickCount++;
-                    setTimeout(function() {
-                        if (parentClickCount >= 3) {
-                            toggleParentApproval(type, index);
-                            showTripleClickWarning();
-                        }
-                        parentClickCount = 0;
-                    }, 1000);
-                } else {
-                    // Single click to approve
-                    toggleParentApproval(type, index);
-                }
-            };
 
             const choreText = document.createElement('div');
             choreText.className = 'chore-text';
@@ -772,37 +1028,60 @@
             choreItem.appendChild(emojiDiv);
             choreItem.appendChild(checkbox);
             choreItem.appendChild(choreText);
-            choreItem.appendChild(parentCheckbox);
 
-            if (!locked) {
-                choreItem.onclick = function(e) {
-                    // Only allow kid clicks on the main area, not parent checkbox
-                    if (e.target !== parentCheckbox) {
+            // Add parent checkbox only in parent mode
+            if ((parentMode && type === 'core') || (allowanceParentMode && type === 'allowance')) {
+                const parentCheckbox = document.createElement('div');
+                parentCheckbox.className = 'checkbox parent-checkbox';
+                if (hasParentApproval) {
+                    parentCheckbox.classList.add('checked');
+                }
+                parentCheckbox.innerHTML = hasParentApproval ? '✓' : '👨‍👩‍👧‍👦';
+                
+                parentCheckbox.onclick = function(e) {
+                    e.stopPropagation();
+                    toggleParentApproval(type, index);
+                };
+                
+                choreItem.appendChild(parentCheckbox);
+            }
+
+            // Handle clicking logic - FIXED FOR ALLOWANCE CHORES
+            if (!locked && !isFullyLocked) {
+                // Check if we're in the wrong parent mode for this chore type
+                const inWrongParentMode = (parentMode && type === 'allowance') || (allowanceParentMode && type === 'core');
+                
+                if (!inWrongParentMode) {
+                    // Kids can click any unlocked chore (core or allowance)
+                    choreItem.onclick = function() {
                         toggleChore(type, index);
-                    }
+                    };
+                }
+            } else if (isFullyLocked && type === 'core') {
+                // Triple click to unlock fully locked core chores only
+                let clickCount = 0;
+                choreItem.onclick = function(e) {
+                    clickCount++;
+                    setTimeout(function() {
+                        if (clickCount >= 3) {
+                            unlockCoreChore(index);
+                            showTripleClickWarning();
+                        }
+                        clickCount = 0;
+                    }, 1000);
                 };
             }
 
             return choreItem;
         }
 
-        function showTripleClickWarning() {
-            const warning = document.createElement('div');
-            warning.className = 'triple-click-warning';
-            warning.textContent = '⚠️ Task unlocked for re-checking ⚠️';
-            document.body.appendChild(warning);
-            
-            setTimeout(function() {
-                if (document.body.contains(warning)) {
-                    document.body.removeChild(warning);
-                }
-            }, 2000);
-        }
-
         function toggleChore(type, index) {
-            if (parentMode) return;
-            
             choreStatus[type][index] = !choreStatus[type][index];
+            
+            // Auto-start timer when first core chore is clicked
+            if (type === 'core' && choreStatus[type][index] && !timerActive) {
+                startTimer();
+            }
             
             if (choreStatus[type][index]) {
                 showCelebration();
@@ -813,16 +1092,57 @@
             updateProgress();
         }
 
+        function unlockCoreChore(index) {
+            // Unlock the specific core chore
+            choreStatus.core[index] = false;
+            choreStatus.parentApproval.core[index] = false;
+            choreStatus.bonusTimeGiven.core[index] = false;
+            
+            // Exit parent mode if active
+            if (parentMode) {
+                parentMode = false;
+            }
+            
+            saveData();
+            renderChores();
+            updateProgress();
+        }
+
+        function toggleParentMode() {
+            parentMode = !parentMode;
+            // When entering core parent mode, exit allowance parent mode
+            if (parentMode) {
+                allowanceParentMode = false;
+            }
+            renderChores();
+        }
+
+        function toggleAllowanceParentMode() {
+            allowanceParentMode = !allowanceParentMode;
+            // When entering allowance parent mode, exit core parent mode
+            if (allowanceParentMode) {
+                parentMode = false;
+            }
+            renderChores();
+        }
+
+        // Function to return to kid mode (exit all parent modes)
+        function returnToKidMode() {
+            parentMode = false;
+            allowanceParentMode = false;
+            renderChores();
+        }
+
         function toggleParentApproval(type, index) {
             const wasApproved = choreStatus.parentApproval[type][index];
             choreStatus.parentApproval[type][index] = !choreStatus.parentApproval[type][index];
             
-            // Add bonus time only when first approving a core chore (and only once per task)
+            // Add bonus time only when first approving a core chore
             if (type === 'core' && !wasApproved && choreStatus.parentApproval[type][index] && choreStatus.core[index]) {
                 addBonusTime(type, index);
             }
             
-            // If parent unchecks, reset the bonus time flag so it can be earned again
+            // If parent unchecks, reset the bonus time flag
             if (wasApproved && !choreStatus.parentApproval[type][index]) {
                 choreStatus.bonusTimeGiven[type][index] = false;
             }
@@ -830,21 +1150,65 @@
             saveData();
             renderChores();
             updateProgress();
-            checkCoreCompletion();
+            
+            // Check for completion
+            if (type === 'core') {
+                checkCoreCompletion();
+            } else if (type === 'allowance') {
+                checkAllowanceCompletion();
+            }
+        }
+
+        function checkAllowanceCompletion() {
+            const completedCount = choreData.allowance.filter(function(_, index) {
+                return choreStatus.allowance[index] && choreStatus.parentApproval.allowance[index];
+            }).length;
+            
+            if (completedCount === choreData.allowance.length) {
+                // All allowance chores are fully completed!
+                returnToKidMode();
+                showAllDoneCelebration();
+            }
+        }
+
+        function showAllDoneCelebration() {
+            const celebration = document.createElement('div');
+            celebration.className = 'completion-celebration';
+            celebration.innerHTML = '<div class="celebration-content" style="background: linear-gradient(135deg, #FFD700, #FFA500);">' +
+                '<div class="celebration-title">🏆 ALL DONE! 🏆</div>' +
+                '<h2>🎉 AMAZING JOB! 🎉</h2>' +
+                '<h3>✨ You completed ALL your chores! ✨</h3>' +
+                '<p>🌟 You are a CHORE CHAMPION! 🌟</p>' +
+                '<button onclick="closeAllDoneCelebration()" style="margin-top: 20px; padding: 15px 30px; font-size: 1.2em; border: none; border-radius: 15px; background: white; color: #FF8C00; cursor: pointer; font-weight: bold;">' +
+                '🎊 Awesome! 🎊</button>' +
+                '</div>';
+            
+            document.body.appendChild(celebration);
+            
+            setTimeout(function() {
+                if (document.body.contains(celebration)) {
+                    document.body.removeChild(celebration);
+                }
+            }, 15000);
+        }
+
+        function closeAllDoneCelebration() {
+            const celebration = document.querySelector('.completion-celebration');
+            if (celebration) {
+                document.body.removeChild(celebration);
+            }
+            // Ensure we're in kid mode after closing celebration
+            returnToKidMode();
         }
 
         function areCoreChoresComplete() {
+            // Check if all core chores are kid-completed AND parent-approved
             for (let i = 0; i < choreData.core.length; i++) {
                 if (!choreStatus.core[i] || !choreStatus.parentApproval.core[i]) {
                     return false;
                 }
             }
             return true;
-        }
-
-        function toggleParentMode() {
-            // Remove parent mode entirely - it's no longer needed
-            return;
         }
 
         function updateProgress() {
@@ -884,7 +1248,20 @@
             const lastDate = localStorage.getItem('lastDate');
             const today = new Date().toDateString();
             
-            if (lastDate !== today) {
+            // Check if we need to migrate data for new chore structure
+            const currentCoreCount = Object.keys(choreStatus.core || {}).length;
+            const expectedCoreCount = choreData.core.length;
+            
+            // Reset if it's a new day OR if the chore structure has changed
+            const shouldReset = lastDate !== today || currentCoreCount !== expectedCoreCount;
+            
+            if (shouldReset) {
+                console.log('🔄 RESETTING: New day or chore structure change detected');
+                
+                // Clear localStorage
+                localStorage.removeItem('choreStatus');
+                localStorage.removeItem('lastDate');
+                
                 choreStatus = {
                     core: {},
                     allowance: {},
@@ -894,6 +1271,8 @@
                 
                 timerActive = false;
                 timeRemaining = 0;
+                parentMode = false;
+                allowanceParentMode = false;
                 if (timerInterval) {
                     clearInterval(timerInterval);
                 }
@@ -902,6 +1281,7 @@
                 
                 saveData();
                 localStorage.setItem('lastDate', today);
+                
                 renderChores();
                 updateProgress();
             }
@@ -910,6 +1290,19 @@
         // Initialize app
         initApp();
         checkForNewDay();
+        
+        // Manual reset function for testing
+        window.resetChoreData = function() {
+            console.log('Manually resetting all chore data...');
+            choreStatus = {
+                core: {},
+                allowance: {},
+                parentApproval: { core: {}, allowance: {} },
+                bonusTimeGiven: { core: {}, allowance: {} }
+            };
+            saveData();
+            location.reload();
+        };
         
         // Check for new day every minute
         setInterval(checkForNewDay, 60000);
