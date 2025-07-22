@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chore Tracker</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Chore Tracker">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timer-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .start-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 25px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .timer-display {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .timer-bonus {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            border-radius: 15px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1.2em;
+            animation: bonus-flash 0.5s ease;
+        }
+
+        @keyframes bonus-flash {
+            0% { background: rgba(76, 175, 80, 0.8); transform: scale(1.05); }
+            100% { background: rgba(76, 175, 80, 0.2); transform: scale(1); }
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 15px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .core-title {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .allowance-title {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .locked {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d) !important;
+        }
+
+        .chore-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .chore-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .chore-item.completed {
+            background: linear-gradient(45deg, #d4edda, #c3e6cb);
+            border-color: #4CAF50;
+        }
+
+        .chore-item.locked {
+            background: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .chore-item.locked:hover {
+            transform: none;
+        }
+
+        .chore-item:not(.completed):not(.locked) {
+            background: linear-gradient(45deg, #fff3cd, #ffeaa7);
+            border-color: #ffc107;
+        }
+
+        .checkbox {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ddd;
+            border-radius: 10px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox.checked {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .checkbox.locked {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .chore-text {
+            flex: 1;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .parent-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .parent-button {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .parent-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .parent-mode {
+            background: rgba(108, 92, 231, 0.1);
+            border: 2px dashed #6c5ce7;
+        }
+
+        .parent-checkbox {
+            width: 30px;
+            height: 30px;
+            margin-left: 15px;
+            border: 3px solid #6c5ce7;
+        }
+
+        .parent-checkbox.checked {
+            background: #6c5ce7;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 15px;
+            height: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            pointer-events: none;
+            z-index: 1000;
+            animation: celebrate 1s ease-out;
+        }
+
+        @keyframes celebrate {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .unlock-message {
+            text-align: center;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .completion-celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            color: white;
+            text-align: center;
+        }
+
+        .celebration-content {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .celebration-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: celebration-bounce 1s ease infinite;
+        }
+
+        @keyframes celebration-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌟 My Chore Tracker 🌟</h1>
+        <div class="date" id="currentDate"></div>
+    </div>
+
+    <div class="container">
+        <!-- Timer Section -->
+        <div class="timer-section" id="timerSection">
+            <button class="start-button" id="startButton" onclick="startTimer()">
+                🚀 Start Chores! 🚀
+            </button>
+            
+            <div id="timerDisplay" style="display: none;">
+                <div class="timer-display" id="timerText">10:00</div>
+                <div id="bonusMessage" class="timer-bonus" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+
+        <!-- Core Chores Section -->
+        <div class="section">
+            <div class="section-title core-title" id="coreTitle">
+                ⭐ Core Chores (Must Do First!) ⭐
+            </div>
+            <div id="coreChores"></div>
+        </div>
+
+        <!-- Allowance Chores Section -->
+        <div class="section">
+            <div class="section-title allowance-title" id="allowanceTitle">
+                💰 Allowance Chores 💰
+            </div>
+            <div id="allowanceUnlock" class="unlock-message" style="display: none;">
+                🎉 Great job! Allowance chores are now unlocked! 🎉
+            </div>
+            <div id="allowanceChores"></div>
+        </div>
+
+        <!-- Parent Section -->
+        <div class="parent-section">
+            <button class="parent-button" onclick="toggleParentMode()">
+                👨‍👩‍👧‍👦 Parent Check Mode
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sample chore data
+        const choreData = {
+            core: [
+                "Make my bed",
+                "Brush my teeth",
+                "Put dirty clothes in hamper",
+                "Clear my dishes from table",
+                "Put toys away in bedroom"
+            ],
+            allowance: [
+                "Vacuum living room ($2)",
+                "Help with laundry ($3)",
+                "Clean bathroom sink ($2)",
+                "Take out trash ($3)",
+                "Wipe down kitchen counters ($2)"
+            ]
+        };
+
+        let parentMode = false;
+        let choreStatus = JSON.parse(localStorage.getItem('choreStatus')) || {
+            core: {},
+            allowance: {},
+            parentApproval: { core: {}, allowance: {} }
+        };
+
+        // Timer variables
+        let timerActive = false;
+        let timeRemaining = 0;
+        let timerInterval = null;
+
+        function startTimer() {
+            timerActive = true;
+            timeRemaining = 10 * 60; // 10 minutes in seconds
+            
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('timerDisplay').style.display = 'block';
+            
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimerDisplay();
+        }
+
+        function updateTimer() {
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining === 60) {
+                    showTimerMessage("⚠️ Only 1 minute left! Hurry up! ⚠️");
+                } else if (timeRemaining === 30) {
+                    showTimerMessage("🚨 30 seconds remaining! 🚨");
+                }
+            } else {
+                clearInterval(timerInterval);
+                showTimerMessage("⏰ Time's up! How did you do? ⏰");
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const displayTime = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+            
+            document.getElementById('timerText').textContent = displayTime;
+        }
+
+        function addBonusTime() {
+            if (timerActive) {
+                timeRemaining += 5 * 60; // Add 5 minutes
+                showTimerMessage("🎉 +5 minutes! Great job! 🎉");
+                updateTimerDisplay();
+            }
+        }
+
+        function showTimerMessage(message) {
+            const bonusDiv = document.getElementById('bonusMessage');
+            bonusDiv.textContent = message;
+            bonusDiv.style.display = 'block';
+            
+            setTimeout(function() {
+                bonusDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function checkCoreCompletion() {
+            const completedCount = choreData.core.filter(function(_, index) {
+                return choreStatus.core[index] && choreStatus.parentApproval.core[index];
+            }).length;
+            
+            if (completedCount === choreData.core.length && timerActive) {
+                clearInterval(timerInterval);
+                showCompletionCelebration();
+            }
+        }
+
+        function showCompletionCelebration() {
+            const celebration = document.createElement('div');
+            celebration.className = 'completion-celebration';
+            celebration.innerHTML = '<div class="celebration-content">' +
+                '<div class="celebration-title">🎉 AMAZING! 🎉</div>' +
+                '<h2>All core chores completed!</h2>' +
+                '<h3>Allowance chores are now unlocked!</h3>' +
+                '<p>You finished with time left!</p>' +
+                '<button onclick="closeCelebration()" style="margin-top: 20px; padding: 15px 30px; font-size: 1.2em; border: none; border-radius: 15px; background: white; color: #4CAF50; cursor: pointer;">' +
+                'Continue to Allowance Chores! 💰</button>' +
+                '</div>';
+            
+            document.body.appendChild(celebration);
+            
+            setTimeout(function() {
+                if (document.body.contains(celebration)) {
+                    document.body.removeChild(celebration);
+                }
+            }, 10000);
+        }
+
+        function closeCelebration() {
+            const celebration = document.querySelector('.completion-celebration');
+            if (celebration) {
+                document.body.removeChild(celebration);
+            }
+        }
+
+        function initApp() {
+            updateDate();
+            renderChores();
+            updateProgress();
+        }
+
+        function updateDate() {
+            const today = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('en-US', options);
+        }
+
+        function renderChores() {
+            renderCoreChores();
+            renderAllowanceChores();
+        }
+
+        function renderCoreChores() {
+            const container = document.getElementById('coreChores');
+            container.innerHTML = '';
+
+            for (let i = 0; i < choreData.core.length; i++) {
+                const choreItem = createChoreElement(choreData.core[i], i, 'core');
+                container.appendChild(choreItem);
+            }
+        }
+
+        function renderAllowanceChores() {
+            const container = document.getElementById('allowanceChores');
+            container.innerHTML = '';
+            
+            const coreComplete = areCoreChoresComplete();
+            
+            if (coreComplete) {
+                document.getElementById('allowanceUnlock').style.display = 'block';
+            } else {
+                document.getElementById('allowanceUnlock').style.display = 'none';
+            }
+
+            for (let i = 0; i < choreData.allowance.length; i++) {
+                const choreItem = createChoreElement(choreData.allowance[i], i, 'allowance', !coreComplete);
+                container.appendChild(choreItem);
+            }
+        }
+
+        function createChoreElement(chore, index, type, locked) {
+            locked = locked || false;
+            const choreItem = document.createElement('div');
+            choreItem.className = 'chore-item' + (locked ? ' locked' : '');
+            
+            const isCompleted = choreStatus[type][index];
+            const hasParentApproval = choreStatus.parentApproval[type][index];
+            
+            if (isCompleted && !locked) {
+                choreItem.classList.add('completed');
+            }
+
+            if (parentMode) {
+                choreItem.classList.add('parent-mode');
+            }
+
+            const checkbox = document.createElement('div');
+            checkbox.className = 'checkbox' + (isCompleted ? ' checked' : '') + (locked ? ' locked' : '');
+            checkbox.innerHTML = isCompleted ? '✓' : '';
+
+            const choreText = document.createElement('div');
+            choreText.className = 'chore-text';
+            choreText.textContent = chore;
+
+            choreItem.appendChild(checkbox);
+            choreItem.appendChild(choreText);
+
+            if (parentMode) {
+                const parentCheckbox = document.createElement('div');
+                parentCheckbox.className = 'checkbox parent-checkbox' + (hasParentApproval ? ' checked' : '');
+                parentCheckbox.innerHTML = hasParentApproval ? '✓' : '👨‍👩‍👧‍👦';
+                
+                parentCheckbox.onclick = function(e) {
+                    e.stopPropagation();
+                    toggleParentApproval(type, index);
+                };
+                
+                choreItem.appendChild(parentCheckbox);
+            }
+
+            if (!locked) {
+                choreItem.onclick = function() {
+                    toggleChore(type, index);
+                };
+            }
+
+            return choreItem;
+        }
+
+        function toggleChore(type, index) {
+            if (parentMode) return;
+            
+            choreStatus[type][index] = !choreStatus[type][index];
+            
+            if (choreStatus[type][index]) {
+                showCelebration();
+            }
+            
+            saveData();
+            renderChores();
+            updateProgress();
+        }
+
+        function toggleParentApproval(type, index) {
+            const wasApproved = choreStatus.parentApproval[type][index];
+            choreStatus.parentApproval[type][index] = !choreStatus.parentApproval[type][index];
+            
+            if (type === 'core' && !wasApproved && choreStatus.parentApproval[type][index] && choreStatus.core[index]) {
+                addBonusTime();
+            }
+            
+            saveData();
+            renderChores();
+            updateProgress();
+            checkCoreCompletion();
+        }
+
+        function areCoreChoresComplete() {
+            for (let i = 0; i < choreData.core.length; i++) {
+                if (!choreStatus.core[i] || !choreStatus.parentApproval.core[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function toggleParentMode() {
+            parentMode = !parentMode;
+            const button = document.querySelector('.parent-button');
+            button.textContent = parentMode ? '👶 Kid Mode' : '👨‍👩‍👧‍👦 Parent Check Mode';
+            button.style.background = parentMode ? 
+                'linear-gradient(45deg, #e74c3c, #c0392b)' : 
+                'linear-gradient(45deg, #6c5ce7, #a29bfe)';
+            renderChores();
+        }
+
+        function updateProgress() {
+            const totalTasks = choreData.core.length + choreData.allowance.length;
+            const completedTasks = Object.keys(choreStatus.core).filter(function(key) {
+                return choreStatus.core[key];
+            }).length + Object.keys(choreStatus.allowance).filter(function(key) {
+                return choreStatus.allowance[key];
+            }).length;
+            
+            const percentage = Math.round((completedTasks / totalTasks) * 100);
+            
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = percentage + '%';
+        }
+
+        function showCelebration() {
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            const emojis = ['🎉', '⭐', '🌟', '🎊', '👏'];
+            celebration.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            document.body.appendChild(celebration);
+            
+            setTimeout(function() {
+                if (document.body.contains(celebration)) {
+                    document.body.removeChild(celebration);
+                }
+            }, 1000);
+        }
+
+        function saveData() {
+            localStorage.setItem('choreStatus', JSON.stringify(choreStatus));
+        }
+
+        function checkForNewDay() {
+            const lastDate = localStorage.getItem('lastDate');
+            const today = new Date().toDateString();
+            
+            if (lastDate !== today) {
+                choreStatus = {
+                    core: {},
+                    allowance: {},
+                    parentApproval: { core: {}, allowance: {} }
+                };
+                
+                timerActive = false;
+                timeRemaining = 0;
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+                document.getElementById('startButton').style.display = 'block';
+                document.getElementById('timerDisplay').style.display = 'none';
+                
+                saveData();
+                localStorage.setItem('lastDate', today);
+                renderChores();
+                updateProgress();
+            }
+        }
+
+        // Initialize app
+        initApp();
+        checkForNewDay();
+        
+        // Check for new day every minute
+        setInterval(checkForNewDay, 60000);
+    </script>
+</body>
+</html>
