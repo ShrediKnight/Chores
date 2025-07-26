@@ -1256,19 +1256,12 @@
             const lastDate = localStorage.getItem('lastDate');
             const today = new Date().toDateString();
             
-            // Check if we need to migrate data for new chore structure
-            const currentCoreCount = Object.keys(choreStatus.core || {}).length;
-            const expectedCoreCount = choreData.core.length;
-            
-            // Reset if it's a new day OR if the chore structure has changed
-            const shouldReset = lastDate !== today || currentCoreCount !== expectedCoreCount;
-            
-            if (shouldReset) {
-                console.log('🔄 RESETTING: New day or chore structure change detected');
+            // Only reset if it's actually a new day (not just chore structure changes)
+            if (lastDate && lastDate !== today) {
+                console.log('🔄 New day detected - resetting chores');
                 
                 // Clear localStorage
                 localStorage.removeItem('choreStatus');
-                localStorage.removeItem('lastDate');
                 
                 choreStatus = {
                     core: {},
@@ -1288,11 +1281,12 @@
                 document.getElementById('timerDisplay').style.display = 'none';
                 
                 saveData();
-                localStorage.setItem('lastDate', today);
-                
                 renderChores();
                 updateProgress();
             }
+            
+            // Always update the date regardless of reset
+            localStorage.setItem('lastDate', today);
         }
 
         // Initialize app
