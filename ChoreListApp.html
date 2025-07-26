@@ -619,6 +619,9 @@
             <button class="reset-button" onclick="showResetDialog()">
                 🔄 Reset Everything
             </button>
+            <div style="color: rgba(255,255,255,0.8); font-size: 1em; margin-top: 15px; font-weight: bold;">
+                v1.1
+            </div>
         </div>
     </div>
 
@@ -633,10 +636,10 @@
                 { text: "Clean up bedroom", emoji: "🧸" }
             ],
             allowance: [
-                { text: "Clean up living room toys", emoji: "🎮" },
-                { text: "Clean up shoes by front door", emoji: "👟" },
-                { text: "Read for 20 minutes", emoji: "📚" },
-                { text: "Help someone in the house", emoji: "🤝" }
+                { text: "Clean up living room toys ($1)", emoji: "🎮" },
+                { text: "Clean up shoes by front door ($1)", emoji: "👟" },
+                { text: "Read for 20 minutes ($1)", emoji: "📚" },
+                { text: "Help someone in the house ($1)", emoji: "🤝" }
             ]
         };
 
@@ -1186,6 +1189,8 @@
                 '<div class="celebration-title">🏆 ALL DONE! 🏆</div>' +
                 '<h2>🎉 AMAZING JOB! 🎉</h2>' +
                 '<h3>✨ You completed ALL your chores! ✨</h3>' +
+                '<div style="background: rgba(255,255,255,0.9); color: #FF8C00; padding: 15px; border-radius: 15px; margin: 15px 0; font-size: 1.3em; font-weight: bold;">' +
+                '💰 You earned $4 for chores + $1 BONUS = $5 total! 💰</div>' +
                 '<p>🌟 You are a CHORE CHAMPION! 🌟</p>' +
                 '<button onclick="closeAllDoneCelebration()" style="margin-top: 20px; padding: 15px 30px; font-size: 1.2em; border: none; border-radius: 15px; background: white; color: #FF8C00; cursor: pointer; font-weight: bold;">' +
                 '🎊 Awesome! 🎊</button>' +
